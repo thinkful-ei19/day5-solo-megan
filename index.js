@@ -7,7 +7,7 @@ const STORE = {
     {name: 'milk', checked: true},
     {name: 'bread', checked: false}
   ],
-  display: 'all',
+  display: true
 };
 
 
@@ -39,10 +39,20 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
-  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+  if (STORE.display===true){
+    //show all items in STORE
+    const shoppingListItemsStringAll = generateShoppingItemsString(STORE.items);
 
-  // insert that HTML into the DOM
-  $('.js-shopping-list').html(shoppingListItemsString);
+    // insert that HTML into the DOM
+    $('.js-shopping-list').html(shoppingListItemsStringAll);
+  }
+  //if the display key is false then:
+  if (STORE.display===false){
+  //show only checked items
+    const shoppingListItemsStringUnchecked = 
+    generateShoppingItemsString(STORE.items.filter(obj => obj['checked']===false));
+    $('.js-shopping-list').html(shoppingListItemsStringUnchecked);
+  }
 }
 
 
@@ -94,6 +104,26 @@ function handleDeleteItemClicked() {
   });
 }
 
+function toggleCheckboxDisplay (){
+  STORE.display = !STORE.display;
+}
+
+function handleDisplayStyle(){
+  ///once the checkbox is clicked:
+  $('#js-shopping-list-form').on('change', '.displaying', event =>{
+    //show this is running:
+    console.log('display style running');
+
+    //change the display key inside object to the opposite value(if true...now false)
+    toggleCheckboxDisplay();
+
+    //re render the shopping list which has a if statement to filter by display key
+    renderShoppingList();
+  });
+
+}
+
+
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
 // that handle new item submission and user clicks on the "check" and "delete" buttons
@@ -103,6 +133,7 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  handleDisplayStyle();
 }
 
 // when the page loads, call `handleShoppingList`
