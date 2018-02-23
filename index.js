@@ -39,6 +39,7 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
+  
   if (STORE.display===true){
     //show all items in STORE
     const shoppingListItemsStringAll = generateShoppingItemsString(STORE.items);
@@ -120,6 +121,42 @@ function handleDisplayStyle(){
     //re render the shopping list which has a if statement to filter by display key
     renderShoppingList();
   });
+}
+
+// function filterItemsBasedOnSearch (){
+//   //take the inputed search value from the search bar:
+//   const searchValue =  $('.search').val();
+//   console.log(searchValue);
+//   //filter the STORE to show only those that match the search value:
+//   STORE.items.filter(obj =>obj.name === searchValue);
+// }
+
+function showOnlySearch (){
+  
+  const shoppingListItemsStringSearchOnly = 
+    generateShoppingItemsString(STORE.items.filter
+      (obj =>obj.name === $('.search').val()));
+
+  // insert that HTML into the DOM
+  $('.js-shopping-list').html(shoppingListItemsStringSearchOnly);
+}
+
+function handleSearchItems (){
+  $('#shopping-list-item-search').submit(event =>{
+    event.preventDefault();
+    console.log('handleSearchItems is running');
+    const searchValue =  $('.search').val();
+
+    //filterItemsBasedOnSearch();
+    showOnlySearch();
+    //renderShoppingList();
+    $('.search').val('');
+    //display only the object that has the item.name ...
+    //that matches the searchValue (use -g for global to find all):
+    
+    
+    //renderShoppingList();
+  });
 
 }
 
@@ -134,6 +171,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleDisplayStyle();
+  handleSearchItems();
 }
 
 // when the page loads, call `handleShoppingList`
