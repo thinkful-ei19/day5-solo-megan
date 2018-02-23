@@ -1,11 +1,14 @@
 'use strict';
 
-const STORE = [
-  {name: 'apples', checked: false},
-  {name: 'oranges', checked: false},
-  {name: 'milk', checked: true},
-  {name: 'bread', checked: false}
-];
+const STORE = {
+  items : [
+    {name: 'apples', checked: false},
+    {name: 'oranges', checked: false},
+    {name: 'milk', checked: true},
+    {name: 'bread', checked: false}
+  ],
+  display: 'all',
+};
 
 
 function generateItemElement(item, itemIndex, template) {
@@ -36,7 +39,7 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
-  const shoppingListItemsString = generateShoppingItemsString(STORE);
+  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
 
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
@@ -45,7 +48,7 @@ function renderShoppingList() {
 
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
-  STORE.push({name: itemName, checked: false});
+  STORE.items.push({name: itemName, checked: false});
 }
 
 function handleNewItemSubmit() {
@@ -60,7 +63,7 @@ function handleNewItemSubmit() {
 }
 function toggleCheckedForListItem (itemIndex){
   console.log('Toggling checked property for item at ' + itemIndex);
-  STORE[itemIndex].checked = !STORE[itemIndex].checked;
+  STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
 function getItemIndexFromElement (item){
@@ -80,7 +83,7 @@ function handleItemCheckClicked() {
 }
 
 function deleteClickedForListItem (itemIndex){
-  STORE.splice(itemIndex, 1);
+  STORE.items.splice(itemIndex, 1);
 }
   
 function handleDeleteItemClicked() {
@@ -89,8 +92,6 @@ function handleDeleteItemClicked() {
     deleteClickedForListItem(itemIndex);
     renderShoppingList();
   });
-//   renderShoppingList();
-//   console.log('`handleDeleteItemClicked` ran');
 }
 
 // this function will be our callback when the page loads. it's responsible for
